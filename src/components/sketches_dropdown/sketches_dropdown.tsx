@@ -14,15 +14,16 @@ export function SketchesDropdown() {
 
   useEffect(() => {
     // Use the same glob pattern as the sketches route
-    const sketchesGlob: Record<string, { default: () => any }> = import.meta.glob('../../sketches/**/*.ts', {
-      eager: true,
-    })
+    const sketchesGlob: Record<string, { default: any }> = {
+      ...import.meta.glob('../../sketches/**/*.ts', { eager: true }),
+      ...import.meta.glob('../../sketches/**/*.tsx', { eager: true }),
+    }
 
     const sketchesList: SketchInfo[] = Object.keys(sketchesGlob).map((filePath) => {
       // Convert file path to URL path
       // ../../sketches/flare-1.ts -> flare-1
       // ../../sketches/nested/dawn-1.ts -> nested/dawn-1
-      const relativePath = filePath.replace('../../sketches/', '').replace('.ts', '')
+      const relativePath = filePath.replace('../../sketches/', '').replace(/\.tsx?$/, '')
       const url = `/sketches/${relativePath}`
 
       // Extract name from path (last part before extension)

@@ -20,7 +20,10 @@ function RouteComponent() {
   const [module, setModule] = useState<any>({})
 
   // Updated glob pattern to include subfolders
-  const sketches: Record<string, { default: any }> = import.meta.glob('../sketches/**/*.{ts,tsx}', { eager: true })
+  const sketches: Record<string, { default: any }> = {
+    ...import.meta.glob('../sketches/**/*.ts', { eager: true }),
+    ...import.meta.glob('../sketches/**/*.tsx', { eager: true }),
+  }
 
   useEffect(() => {
     const tsPath = `../sketches/${sketchPath}.ts`
