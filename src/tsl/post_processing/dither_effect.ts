@@ -1,4 +1,14 @@
 import { Fn, vec3, float, screenSize, vec4, uv, dot, If, int, floor } from 'three/tsl'
+import type { Node } from 'three/webgpu'
+
+type DitherEffectProps = {
+  input: any
+  inputUV?: () => Node
+  pixelSize?: any
+  colorThreshold?: any
+  bias?: any
+  color?: any
+}
 
 const bayerMatrix8x8Values = [
   0.0 / 64.0,
@@ -67,7 +77,7 @@ const bayerMatrix8x8Values = [
   21.0 / 64.0,
 ]
 
-const getBayerValue8x8 = Fn(([x, y]) => {
+const getBayerValue8x8 = Fn<[Node, Node]>(([x, y]) => {
   const index = y.mul(8).add(x).toVar()
   const value = float(0.0).toVar()
 
@@ -81,7 +91,7 @@ const getBayerValue8x8 = Fn(([x, y]) => {
   return value
 })
 
-const dither = Fn(([_uv, resolution, color, colorThreshold, bias]) => {
+const dither = Fn<[Node, Node, Node, Node, Node]>(([_uv, resolution, color, colorThreshold, bias]) => {
   const colorNum = float(colorThreshold)
   const _color = color.toVar()
 
@@ -109,7 +119,7 @@ const dither = Fn(([_uv, resolution, color, colorThreshold, bias]) => {
  * @param {vec3} [props.color=null] - Optional color to tint the dithered result
  * @returns {vec4} The dithered color output
  */
-export const ditherEffect = Fn((props) => {
+export const ditherEffect = Fn<DitherEffectProps>((props) => {
   const { input, inputUV = uv, pixelSize = 2, colorThreshold = 0.35, bias = 0.25, color = null } = props || {}
 
   const _uv = inputUV().toVar()

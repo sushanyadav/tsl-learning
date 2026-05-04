@@ -1,4 +1,5 @@
 import { abs, float, Fn } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 import { repeatingPattern } from './repeating_pattern'
 import { bloom } from './bloom'
 
@@ -11,7 +12,7 @@ import { bloom } from './bloom'
  * @param {float} [_time=0] - The time offset.
  * @returns {float} The bloomed repeating pattern value.
  */
-export const bloomEdgePattern = Fn(([pattern, repeat, edge, exponent, _time = float(0)]) => {
+export const bloomEdgePattern = Fn<[Node, Node, Node, Node, Node?]>(([pattern, repeat, edge, exponent, _time = float(0)]) => {
   pattern.assign(repeatingPattern(pattern, repeat, _time))
   pattern.assign(abs(pattern))
   pattern.assign(bloom(pattern, edge, exponent))

@@ -1,4 +1,5 @@
 import { Fn, PI, vec2, mul, add, atan, length, select, log, cos, sin, div, pow } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 import { cosh, sinh } from '@/tsl/utils/color/tonemapping'
 
 /**
@@ -7,7 +8,7 @@ import { cosh, sinh } from '@/tsl/utils/color/tonemapping'
  * @param {vec2} b Divisor complex number
  * @returns {vec2} Result of division
  */
-export const complexDiv = Fn(([a, b]) => {
+export const complexDiv = Fn<[Node, Node]>(([a, b]) => {
   return vec2(
     div(a.x.mul(b.x).add(mul(a.y, b.y)), add(b.x.mul(b.x), b.y.mul(b.y))),
     div(a.y.mul(b.x).sub(mul(a.x, b.y)), add(b.x.mul(b.x), b.y.mul(b.y))),
@@ -19,7 +20,7 @@ export const complexDiv = Fn(([a, b]) => {
  * @param {vec2} a Complex number
  * @returns {vec2} Logarithm in complex form
  */
-export const complexLog = Fn(([a]) => {
+export const complexLog = Fn<[Node]>(([a]) => {
   const polar = asPolar(a)
   const rPart = polar.x
   const iPart = polar.y.toVar()
@@ -34,7 +35,7 @@ export const complexLog = Fn(([a]) => {
  * @param {vec2} b Second complex number
  * @returns {vec2} Product
  */
-export const complexMul = Fn(([a, b]) => {
+export const complexMul = Fn<[Node, Node]>(([a, b]) => {
   return vec2(a.x.mul(b.x).sub(mul(a.y, b.y)), a.x.mul(b.y).add(mul(a.y, b.x)))
 })
 
@@ -44,7 +45,7 @@ export const complexMul = Fn(([a, b]) => {
  * @param {number} p Real exponent
  * @returns {vec2} Power result
  */
-export const complexPow = Fn(([v, p]) => {
+export const complexPow = Fn<[Node, Node]>(([v, p]) => {
   const z = asPolar(v)
   return pow(z.x, p).mul(vec2(cos(z.y.mul(p)), sin(z.y.mul(p))))
 })
@@ -54,7 +55,7 @@ export const complexPow = Fn(([v, p]) => {
  * @param {vec2} a Complex number
  * @returns {vec2} Sine in complex form
  */
-export const complexSin = Fn(([a]) => {
+export const complexSin = Fn<[Node]>(([a]) => {
   return vec2(sin(a.x).mul(cosh(a.y)), cos(a.x).mul(sinh(a.y)))
 })
 
@@ -63,7 +64,7 @@ export const complexSin = Fn(([a]) => {
  * @param {vec2} a Complex number
  * @returns {vec2} Cosine in complex form
  */
-export const complexCos = Fn(([a]) => {
+export const complexCos = Fn<[Node]>(([a]) => {
   return vec2(cos(a.x).mul(cosh(a.y)), sin(a.x).mul(sinh(a.y)).negate())
 })
 
@@ -72,7 +73,7 @@ export const complexCos = Fn(([a]) => {
  * @param {vec2} a Complex number
  * @returns {vec2} Tangent in complex form
  */
-export const complexTan = Fn(([a]) => {
+export const complexTan = Fn<[Node]>(([a]) => {
   return complexDiv(complexSin(a), complexCos(a))
 })
 
@@ -81,6 +82,6 @@ export const complexTan = Fn(([a]) => {
  * @param {vec2} z Complex number
  * @returns {vec2} Polar form: (radius, angle)
  */
-export const asPolar = Fn(([z]) => {
+export const asPolar = Fn<[Node]>(([z]) => {
   return vec2(length(z), atan(z.y, z.x))
 })

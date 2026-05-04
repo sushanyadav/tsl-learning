@@ -1,6 +1,6 @@
 import { useFrame, useThree, RootState } from '@react-three/fiber'
-import { MeshBasicNodeMaterial } from 'three/webgpu'
-import { sin, time, uv, vec3, NodeRepresentation } from 'three/tsl'
+import { MeshBasicNodeMaterial, Node } from 'three/webgpu'
+import { sin, time, uv, vec3 } from 'three/tsl'
 import { ReactNode } from 'react'
 
 /**
@@ -17,7 +17,31 @@ const TemplateImpl = ({ colorNode, onFrame }) => {
   const _colorNode = colorNode ? colorNode : vec3(_uv, sin(time))
   s.colorNode = _colorNode
 
+  const inspectorNodes: any[] = []
+  const collectInspectorNodes = (node: any, seen = new Set()) => {
+    if (!node || seen.has(node)) return
+    seen.add(node)
+    if (node.isInspectorNode) inspectorNodes.push(node)
+    if (node._beforeNodes) for (const n of node._beforeNodes) collectInspectorNodes(n, seen)
+    if (node.node) collectInspectorNodes(node.node, seen)
+  }
+  collectInspectorNodes(_colorNode)
+
   const { width, height } = useThree((state) => state.viewport)
+  const gl = useThree((state) => state.gl) as any
+
+  if (gl && inspectorNodes.length > 0 && !gl.__inspectorNodesPatched) {
+    gl.__inspectorNodesPatched = true
+    const insp = gl.inspector
+    const origBegin = insp.begin.bind(insp)
+    insp.begin = function () {
+      const r = origBegin()
+      if (insp.currentNodes !== null) {
+        for (const n of inspectorNodes) insp.inspect(n)
+      }
+      return r
+    }
+  }
 
   useFrame((state) => {
     if (onFrame) {
@@ -40,7 +64,7 @@ const TemplateImpl = ({ colorNode, onFrame }) => {
  * @property {ReactNode} [children] - Optional children.
  */
 export type WebGPUSketchProps = {
-  colorNode?: NodeRepresentation
+  colorNode?: Node
   onFrame?: (material: MeshBasicNodeMaterial, state: RootState) => void
   children?: ReactNode
 }

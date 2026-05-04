@@ -1,4 +1,12 @@
 import { vec2, Fn, fract, sin, dot, uv } from 'three/tsl'
+import type { Node } from 'three/webgpu'
+
+type GrainTextureEffectProps = {
+  input: any
+  inputUV?: () => Node
+  intensity?: any
+  scale?: any
+}
 
 /**
  * Creates a grain texture effect for post-processing.
@@ -8,7 +16,7 @@ import { vec2, Fn, fract, sin, dot, uv } from 'three/tsl'
  * @param {number} [props.scale=1.0] - Scale of the grain pattern
  * @returns {vec4} The grain processed color
  */
-export const grainTextureEffect = Fn((props) => {
+export const grainTextureEffect = Fn<GrainTextureEffectProps>((props) => {
   const { input, inputUV = uv, intensity = 0.1, scale = 1.0 } = props || {}
 
   const _uv = inputUV().toVar()

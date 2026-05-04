@@ -1,4 +1,5 @@
 import { Fn, floor } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
 /***
  * Returns a domain index based on a number of repetitions.
@@ -6,6 +7,6 @@ import { Fn, floor } from 'three/tsl'
  * @param _repetitions - The number of repetitions to index.
  * @returns The domain index.
  */
-export const domainIndex = Fn(([_d, _repetitions]) => {
+export const domainIndex = Fn<[Node, Node]>(([_d, _repetitions]) => {
   return floor(_d.mul(_repetitions))
 })

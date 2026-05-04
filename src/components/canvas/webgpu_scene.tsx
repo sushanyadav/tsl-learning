@@ -5,6 +5,7 @@ import { AdaptiveDpr, Preload, StatsGl, OrthographicCamera } from '@react-three/
 import { useState } from 'react'
 
 import { WebGPURenderer } from 'three/webgpu'
+import { Inspector } from 'three/addons/inspector/Inspector.js'
 import { ColorSpaceCorrection } from './color_space_correction'
 
 type SceneProps = {
@@ -42,8 +43,10 @@ const WebGPUScene = ({ debug = false, frameloop = 'always', orthographic = false
       frameloop={canvasFrameloop}
       gl={async (props) => {
         const renderer = new WebGPURenderer(props as any)
-
+        const inspector = new Inspector()
+        renderer.inspector = inspector
         await renderer.init()
+        document.body.appendChild(inspector.domElement)
         setCanvasFrameloop(frameloop)
 
         return renderer

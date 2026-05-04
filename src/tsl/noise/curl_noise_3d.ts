@@ -1,5 +1,6 @@
 // Base on https://al-ro.github.io/projects/embers/
 import { EPSILON, cross, Fn, vec3 } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 import { simplexNoise3d } from './simplex_noise_3d'
 
 /**
@@ -7,7 +8,7 @@ import { simplexNoise3d } from './simplex_noise_3d'
  * @param {vec3} inputA - Input 3D vector.
  * @returns {vec3} Curl noise vector.
  */
-export const curlNoise3d = Fn(([inputA]) => {
+export const curlNoise3d = Fn<[Node]>(([inputA]) => {
   // X
   const aXPos = simplexNoise3d(inputA.add(vec3(EPSILON, 0, 0)))
   const aXNeg = simplexNoise3d(inputA.sub(vec3(EPSILON, 0, 0)))

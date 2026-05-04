@@ -1,4 +1,14 @@
 import { Fn, float, sin, pow, mix, uv } from 'three/tsl'
+import type { Node } from 'three/webgpu'
+
+type CrtScanlineEffectProps = {
+  input: any
+  inputUV?: () => Node
+  lineFrequency?: any
+  lineIntensity?: any
+  curvature?: any
+  scanlineSharpness?: any
+}
 
 /**
  * Creates a CRT monitor scanline effect with optional barrel distortion for post-processing.
@@ -11,7 +21,7 @@ import { Fn, float, sin, pow, mix, uv } from 'three/tsl'
  * @param {number} [props.scanlineSharpness=0.3] - Sharpness of the scanline effect (0-1)
  * @returns {vec4} The CRT scanline processed color
  */
-export const crtScanlineEffect = Fn((props) => {
+export const crtScanlineEffect = Fn<CrtScanlineEffectProps>((props) => {
   const {
     input,
     inputUV = uv,

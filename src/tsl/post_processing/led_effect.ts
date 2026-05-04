@@ -1,4 +1,14 @@
 import { Fn, fract, pow, smoothstep, length, float, uv } from 'three/tsl'
+import type { Node } from 'three/webgpu'
+
+type LedEffectProps = {
+  input: any
+  inputUV?: () => Node
+  scalar?: any
+  zoom?: any
+  exponent?: any
+  edge?: any
+}
 
 /**
  * Creates an LED screen effect with configurable parameters for post-processing.
@@ -10,7 +20,7 @@ import { Fn, fract, pow, smoothstep, length, float, uv } from 'three/tsl'
  * @param {number} [props.edge=0.1] - Controls the threshold of the LED pattern
  * @returns {vec4} The LED processed color
  */
-export const ledEffect = Fn((props) => {
+export const ledEffect = Fn<LedEffectProps>((props) => {
   const { input, inputUV = uv, scalar = 100, zoom = 2, exponent = 1.2, edge = 0.1 } = props || {}
 
   const _uv = inputUV().toVar()

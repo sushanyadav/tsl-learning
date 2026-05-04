@@ -1,6 +1,7 @@
 import { float, Fn, If } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
-export const median3 = Fn(([a, b, c]) => {
+export const median3 = Fn<[Node, Node, Node]>(([a, b, c]) => {
   const _a = float(a)
   const _b = float(b)
   const _c = float(c)

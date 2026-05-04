@@ -1,4 +1,14 @@
 import { Fn, vec2, vec3, float, sin, cos, fract, length, smoothstep, dot, vec4, uv, screenSize } from 'three/tsl'
+import type { Node } from 'three/webgpu'
+
+type HalftoneEffectProps = {
+  input: any
+  inputUV?: () => Node
+  frequency?: any
+  angle?: any
+  smoothness?: any
+  color?: any
+}
 
 /**
  * Creates a halftone dot pattern effect for print/comic book aesthetics in post-processing.
@@ -9,7 +19,7 @@ import { Fn, vec2, vec3, float, sin, cos, fract, length, smoothstep, dot, vec4, 
  * @param {number} [props.smoothness=0.05] - Edge smoothness of the dots
  * @returns {vec4} The halftone processed color
  */
-export const halftoneEffect = Fn((props) => {
+export const halftoneEffect = Fn<HalftoneEffectProps>((props) => {
   const { input, inputUV = uv, frequency = 100, angle = 0.5, smoothness = 0.1, color = null } = props || {}
 
   const _uv = inputUV().toVar()

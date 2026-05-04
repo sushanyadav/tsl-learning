@@ -1,4 +1,13 @@
 import { Fn, vec2, float, normalize, length, vec4, uv } from 'three/tsl'
+import type { Node } from 'three/webgpu'
+
+type ChromaticAberrationEffectProps = {
+  input: any
+  inputUV?: () => Node
+  strength?: any
+  radial?: any
+  direction?: any
+}
 
 /**
  * Creates a chromatic aberration effect by separating RGB channels.
@@ -9,7 +18,7 @@ import { Fn, vec2, float, normalize, length, vec4, uv } from 'three/tsl'
  * @param {vec2} [props.direction=vec2(1,0)] - Direction of aberration when radial=0
  * @returns {vec4} The chromatic aberration processed color
  */
-export const chromaticAberrationEffect = Fn((props) => {
+export const chromaticAberrationEffect = Fn<ChromaticAberrationEffectProps>((props) => {
   const { input, inputUV = uv, strength = 0.01, radial = 0.5, direction = vec2(0, 0) } = props || {}
 
   // We need to use the built-in uv() here to work as a post-processing effect

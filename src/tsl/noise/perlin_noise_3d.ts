@@ -1,4 +1,5 @@
 import { vec3, floor, Fn, vec4, mul, fract, abs, step, dot, float, mix, vec2 } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 import { mod289, permute, taylorInvSqrt, fade } from './common'
 
 /**
@@ -6,7 +7,7 @@ import { mod289, permute, taylorInvSqrt, fade } from './common'
  * @param {vec3} P - Input 3D vector.
  * @returns {float} Noise value.
  */
-export const perlinNoise3d = /*#__PURE__*/ Fn(([P_immutable]) => {
+export const perlinNoise3d = /*#__PURE__*/ Fn<[Node]>(([P_immutable]) => {
   const P = vec3(P_immutable).toVar()
   const Pi0 = vec3(floor(P)).toVar()
   const Pi1 = vec3(Pi0.add(vec3(1.0))).toVar()

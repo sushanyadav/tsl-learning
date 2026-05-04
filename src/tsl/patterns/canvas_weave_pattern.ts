@@ -1,11 +1,12 @@
 import { fbm } from '@/tsl/noise/fbm'
 import { Fn, fract, sin, PI, vec3, smoothstep, mix } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
 /**
  * Returns a canvas weave pattern value for a given UV coordinate.
  * @param {vec2} _uv - The UV coordinates.
  */
-export const canvasWeavePattern = Fn(([_uv]) => {
+export const canvasWeavePattern = Fn<[Node]>(([_uv]) => {
   const grid = fract(_uv.mul(200.0))
 
   // Add noise to warp the grid itself

@@ -1,4 +1,5 @@
 import { Fn, vec2, vec3, step } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 import { simplexNoise3d } from '@/tsl/noise/simplex_noise_3d'
 import { fbm } from '@/tsl/noise/fbm'
 
@@ -14,7 +15,7 @@ type SpeckedNoisePatternOptions = {
  * @param {float} [options.density=0.75] - The density threshold for speckles.
  * @param {vec2} [options.warpAmount=vec2(80, 120)] - Noise frequencies used for UV warping.
  */
-export const speckedNoisePattern = Fn(([_uv, options = {}]) => {
+export const speckedNoisePattern = Fn<[Node, SpeckedNoisePatternOptions?]>(([_uv, options = {}]) => {
   const { density = 0.75, warpAmount = vec2(80, 120) } = options as SpeckedNoisePatternOptions
   // Warp the UVs for organic distribution
   const warpX = fbm(vec3(_uv.mul(3.0), 0.0))

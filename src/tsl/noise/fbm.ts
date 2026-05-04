@@ -1,4 +1,5 @@
 import { Fn, float, vec3, Loop, mul, add, div, vec2 } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 import { simplexNoise3d } from './simplex_noise_3d'
 
 type FbmOptions = {
@@ -35,7 +36,7 @@ type WarpedFbmCoordsOptions = {
  * @param {float} [options.gain=0.5] - Amplitude multiplier between octaves.
  * @returns {float} FBM noise value.
  */
-export const fbm = Fn(([p, options = {}]) => {
+export const fbm = Fn<[Node, FbmOptions?]>(([p, options = {}]) => {
   const { octaves = 4.0, frequency = 1.0, amplitude = 1.0, lacunarity = 2.0, gain = 0.5 } =
     options as FbmOptions
   const value = float(0.0).toVar()
@@ -74,7 +75,7 @@ export const fbm = Fn(([p, options = {}]) => {
  * @param {float} [options.gain=0.5] - Amplitude multiplier between octaves.
  * @returns {float} Ridged FBM noise value.
  */
-export const ridgedFbm = Fn(([p, options = {}]) => {
+export const ridgedFbm = Fn<[Node, FbmOptions?]>(([p, options = {}]) => {
   const { octaves = 4.0, frequency = 1.0, amplitude = 1.0, lacunarity = 2.0, gain = 0.5 } =
     options as FbmOptions
   const value = float(0.0).toVar()
@@ -118,7 +119,7 @@ export const ridgedFbm = Fn(([p, options = {}]) => {
  * @param {float} [options.warpStrength=0.1] - Strength of domain warping.
  * @returns {float} Domain warped FBM noise value.
  */
-export const domainWarpedFbm = Fn(([p, options = {}]) => {
+export const domainWarpedFbm = Fn<[Node, DomainWarpedFbmOptions?]>(([p, options = {}]) => {
   const {
     octaves = 4.0,
     frequency = 1.0,
@@ -156,7 +157,7 @@ export const domainWarpedFbm = Fn(([p, options = {}]) => {
  * @returns {float} Warped FBM noise value.
  * @example
  */
-export const warpedFbmCoords = Fn(([uv0, _time, options = {}]) => {
+export const warpedFbmCoords = Fn<[Node, Node, WarpedFbmCoordsOptions?]>(([uv0, _time, options = {}]) => {
   const {
     frequency = 25,
     offset1 = 25,

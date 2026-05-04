@@ -1,4 +1,5 @@
 import { float, max, Fn, dot, vec3, normalize, reflect, mix } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
 /**
  * Returns a fresnel effect based on a given view direction and normal.
@@ -7,7 +8,7 @@ import { float, max, Fn, dot, vec3, normalize, reflect, mix } from 'three/tsl'
  * @param {number} [p=2] - The fresnel exponent.
  * @returns {float} The fresnel effect value.
  */
-export const fresnel = Fn(([viewDir, normal, p = float(2)]) => {
+export const fresnel = Fn<[Node, Node, Node?]>(([viewDir, normal, p = float(2)]) => {
   const fresnel = float(1)
     .sub(max(0, dot(viewDir, normal)))
     .pow(p)
@@ -22,7 +23,7 @@ export const fresnel = Fn(([viewDir, normal, p = float(2)]) => {
  * @param {vec3} skyColor - The sky color.
  * @returns {vec3} The mixed hemi light color.
  */
-export const hemi = Fn(([normal, groundColor, skyColor]) => {
+export const hemi = Fn<[Node, Node, Node]>(([normal, groundColor, skyColor]) => {
   const hemiMix = normal.y.mul(0.5).add(0.5)
   const hemi = mix(groundColor, skyColor, hemiMix)
 
@@ -36,7 +37,7 @@ export const hemi = Fn(([normal, groundColor, skyColor]) => {
  * @param {vec3} lightColor - The light color.
  * @returns {vec3} The diffuse light color.
  */
-export const diffuse = Fn(([lightDir, normal, lightColor]) => {
+export const diffuse = Fn<[Node, Node, Node]>(([lightDir, normal, lightColor]) => {
   const dp = max(0, dot(lightDir, normal))
   const diffuse = dp.mul(lightColor)
 
@@ -51,7 +52,7 @@ export const diffuse = Fn(([lightDir, normal, lightColor]) => {
  * @param {number} [p=32] - The phong exponent.
  * @returns {vec3} The specular light color.
  */
-export const phongSpecular = Fn(([viewDir, normal, lightDir, p = float(32)]) => {
+export const phongSpecular = Fn<[Node, Node, Node, Node?]>(([viewDir, normal, lightDir, p = float(32)]) => {
   const ph = normalize(reflect(lightDir.negate(), normal))
   const phongValue = max(0, dot(viewDir, ph)).pow(p)
   const specular = vec3(phongValue).toVar()

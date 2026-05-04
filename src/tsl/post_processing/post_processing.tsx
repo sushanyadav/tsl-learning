@@ -1,10 +1,10 @@
 import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useRef } from 'react'
-import { mrt, pass, emissive, output, Fn } from 'three/tsl'
+import { mrt, pass, emissive, output } from 'three/tsl'
 import * as THREE from 'three/webgpu'
 
 export type PostProcessingProps = {
-  effect: Fn
+  effect: (args: Record<string, any>) => THREE.Node
   wrap?: 'none' | 'repeat' | 'mirror'
   args?: Record<string, any>
 }

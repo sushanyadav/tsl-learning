@@ -1,4 +1,5 @@
 import { Fn, vec2, float, sin, cos, dot } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
 type WaveDistortionOptions = {
   frequency?: ReturnType<typeof float>
@@ -17,7 +18,7 @@ type WaveDistortionOptions = {
  * @param {number} [options.timeOffset=0.0] - Time offset for animation.
  * @returns {vec2} Distorted UV coordinates
  */
-export const waveDistortion = Fn(([_uv, options = {}]) => {
+export const waveDistortion = Fn<[Node, WaveDistortionOptions?]>(([_uv, options = {}]) => {
   const {
     frequency = float(10.0),
     amplitude = float(0.1),

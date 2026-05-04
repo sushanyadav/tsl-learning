@@ -1,4 +1,5 @@
 import { Fn, float, cos } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
 /**
  * Generates a palette of colors using a cosine-based function
@@ -10,6 +11,6 @@ import { Fn, float, cos } from 'three/tsl'
  * @param {vec3} e Cosine scalar
  * @returns {vec3} RGB color value
  */
-export const cosinePalette = Fn(([t, a, b, c, d, e = float(6.28318)]) => {
+export const cosinePalette = Fn<[Node, Node, Node, Node, Node, Node?]>(([t, a, b, c, d, e = float(6.28318)]) => {
   return a.add(b.mul(cos(e.mul(c.mul(t).add(d)))))
 })

@@ -1,4 +1,11 @@
 import { Fn, floor, float, uv, screenSize, vec2 } from 'three/tsl'
+import type { Node } from 'three/webgpu'
+
+type PixellationEffectProps = {
+  input: any
+  inputUV?: () => Node
+  size?: any
+}
 
 /**
  * Creates a pixellation effect for post-processing.
@@ -8,7 +15,7 @@ import { Fn, floor, float, uv, screenSize, vec2 } from 'three/tsl'
  * @param {number} [props.size=20.0] - Size of the pixellation blocks (higher values = larger pixels)
  * @returns {vec4} The pixellated color
  */
-export const pixellationEffect = Fn((props) => {
+export const pixellationEffect = Fn<PixellationEffectProps>((props) => {
   const { input, inputUV = uv, size = 20.0 } = props || {}
 
   const _uv = inputUV().toVar()

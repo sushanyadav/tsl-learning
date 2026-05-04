@@ -1,4 +1,5 @@
 import { Fn, sin, Loop, float, mat2 } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
 type TurbulenceOptions = {
   _num?: number
@@ -20,7 +21,7 @@ type TurbulenceOptions = {
  * @param {number} [options._freq=2.0] - Base frequency.
  * @param {number} [options._exp=1.4] - Frequency growth factor per octave.
  */
-export const turbulence = Fn(([p, _time, options = {}]) => {
+export const turbulence = Fn<[Node, Node, TurbulenceOptions?]>(([p, _time, options = {}]) => {
   const { _num = 10.0, _amp = 0.7, _speed = 0.3, _freq = 2.0, _exp = 1.4 } = options as TurbulenceOptions
   // Turbulence starting scale
   const freq = float(_freq).toVar()
@@ -28,7 +29,7 @@ export const turbulence = Fn(([p, _time, options = {}]) => {
   const amp = float(_amp).toVar()
 
   // Turbulence rotation matrix
-  const rot = mat2(0.6, -0.8, 0.8, 0.6).toVar()
+  const rot = (mat2 as any)(0.6, -0.8, 0.8, 0.6).toVar()
 
   //Loop through turbulence octaves
   Loop({ start: 0.0, end: _num, type: 'float' }, ({ i }) => {
@@ -39,7 +40,7 @@ export const turbulence = Fn(([p, _time, options = {}]) => {
     p.addAssign(amp.mul(rot[0]).mul(sin(phase)).div(freq))
 
     //Rotate for the next octave
-    rot.mulAssign(mat2(0.6, -0.8, 0.8, 0.6))
+    rot.mulAssign((mat2 as any)(0.6, -0.8, 0.8, 0.6))
 
     //Scale down for the next octave
     freq.mulAssign(_exp)

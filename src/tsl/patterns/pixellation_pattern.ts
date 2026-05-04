@@ -1,4 +1,5 @@
 import { Fn, floor, float, screenSize } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
 /**
  * Creates a pixellation pattern given the current UV coordinates and screenSize.
@@ -6,8 +7,8 @@ import { Fn, floor, float, screenSize } from 'three/tsl'
  * @param {number} [size=20.0] - The size of the pixellation.
  * @returns {float} The pixellation pattern value.
  */
-export const pixellationPattern = Fn(([_uv, size = 20.0]) => {
-  const _size = float(size)
+export const pixellationPattern = Fn<[Node, Node?]>(([_uv, size = 20.0]) => {
+  const _size = float(size as any)
 
   // The input UVs should be aspect corrected
   const pixelSize = _size.div(screenSize.x)

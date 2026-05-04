@@ -1,6 +1,14 @@
 import { Fn, fract, pow, float, smoothstep, length, screenSize } from 'three/tsl'
 import { screenAspectUV } from '@/tsl/utils/function'
 
+type LedPatternProps = {
+  resolution?: any
+  cellSize?: any
+  intensity?: any
+  intensityFalloff?: any
+  edgeSoftness?: any
+}
+
 /**
  * Creates an LED screen pattern with configurable parameters.
  * @param {vec2} [props.resolution=screenSize] - The render resolution
@@ -10,7 +18,7 @@ import { screenAspectUV } from '@/tsl/utils/function'
  * @param {number} [props.edgeSoftness=0.2] - Controls the smoothness of the LED pattern edges
  * @returns {float} The LED pattern value
  */
-export const ledPattern = Fn((props) => {
+export const ledPattern = Fn<LedPatternProps>((props) => {
   const {
     resolution = screenSize,
     cellSize = float(10),

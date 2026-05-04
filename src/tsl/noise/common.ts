@@ -1,6 +1,7 @@
 import { floor, Fn, vec3, sub, vec4, mul, overloadingFn, fract, abs, dot, lessThan, float, mod } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
-export const mod289_0 = /*#__PURE__*/ Fn(([x_immutable]) => {
+export const mod289_0 = /*#__PURE__*/ Fn<[Node]>(([x_immutable]) => {
   const x = vec3(x_immutable).toVar()
 
   return x.sub(floor(x.mul(1.0 / 289.0)).mul(289.0))
@@ -10,7 +11,7 @@ export const mod289_0 = /*#__PURE__*/ Fn(([x_immutable]) => {
   inputs: [{ name: 'x', type: 'vec3' }],
 })
 
-export const mod289_1 = /*#__PURE__*/ Fn(([x_immutable]) => {
+export const mod289_1 = /*#__PURE__*/ Fn<[Node]>(([x_immutable]) => {
   const x = vec4(x_immutable).toVar()
 
   return x.sub(floor(x.mul(1.0 / 289.0)).mul(289.0))
@@ -23,7 +24,7 @@ export const mod289_1 = /*#__PURE__*/ Fn(([x_immutable]) => {
 // @ts-ignore
 export const mod289 = /*#__PURE__*/ overloadingFn([mod289_0, mod289_1])
 
-export const fade = /*#__PURE__*/ Fn(([t_immutable]) => {
+export const fade = /*#__PURE__*/ Fn<[Node]>(([t_immutable]) => {
   const t = vec3(t_immutable).toVar()
 
   return t
@@ -41,7 +42,7 @@ export const fade = /*#__PURE__*/ Fn(([t_immutable]) => {
  * @param {vec4} x - Input vector.
  * @returns {vec4} Permuted vector.
  */
-export const permute_0 = /*#__PURE__*/ Fn(([x_immutable]) => {
+export const permute_0 = /*#__PURE__*/ Fn<[Node]>(([x_immutable]) => {
   const x = vec4(x_immutable).toVar()
 
   return mod(x.mul(34.0).add(1.0).mul(x), 289.0)
@@ -57,7 +58,7 @@ export const permute_0 = /*#__PURE__*/ Fn(([x_immutable]) => {
  * @param {float} x - Input value.
  * @returns {float} Permuted value.
  */
-export const permute_1 = /*#__PURE__*/ Fn(([x_immutable]) => {
+export const permute_1 = /*#__PURE__*/ Fn<[Node]>(([x_immutable]) => {
   const x = float(x_immutable).toVar()
 
   return floor(mod(x.mul(34.0).add(1.0).mul(x), 289.0))
@@ -82,7 +83,7 @@ export const permute = /*#__PURE__*/ overloadingFn([permute_0, permute_1])
  * @param {vec4} r - Input vector.
  * @returns {vec4} Result vector.
  */
-export const taylorInvSqrt_0 = /*#__PURE__*/ Fn(([r_immutable]) => {
+export const taylorInvSqrt_0 = /*#__PURE__*/ Fn<[Node]>(([r_immutable]) => {
   const r = vec4(r_immutable).toVar()
 
   return sub(1.79284291400159, mul(0.85373472095314, r))
@@ -99,7 +100,7 @@ export const taylorInvSqrt_0 = /*#__PURE__*/ Fn(([r_immutable]) => {
  * @param {float} r - Input value.
  * @returns {float} Result value.
  */
-export const taylorInvSqrt_1 = /*#__PURE__*/ Fn(([r_immutable]) => {
+export const taylorInvSqrt_1 = /*#__PURE__*/ Fn<[Node]>(([r_immutable]) => {
   const r = float(r_immutable).toVar()
 
   return sub(1.79284291400159, mul(0.85373472095314, r))
@@ -125,7 +126,7 @@ export const taylorInvSqrt = /*#__PURE__*/ overloadingFn([taylorInvSqrt_0, taylo
  * @param {vec4} ip - Input permutation vector.
  * @returns {vec4} Gradient vector.
  */
-export const grad4 = /*#__PURE__*/ Fn(([j_immutable, ip_immutable]) => {
+export const grad4 = /*#__PURE__*/ Fn<[Node, Node]>(([j_immutable, ip_immutable]) => {
   const ip = vec4(ip_immutable).toVar()
   const j = float(j_immutable).toVar()
   const ones = vec4(1.0, 1.0, 1.0, -1.0)

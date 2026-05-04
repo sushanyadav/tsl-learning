@@ -1,4 +1,5 @@
 import { Fn, smoothstep, pow } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 import { sdSphere } from '@/tsl/utils/sdf/shapes'
 
 type VignettePatternOptions = {
@@ -14,7 +15,7 @@ type VignettePatternOptions = {
  * @param {number} [options.exponent=1.2] - The exponent of the vignette.
  * @returns {float} The vignette pattern value.
  */
-export const vignettePattern = Fn(([_uv, options = {}]) => {
+export const vignettePattern = Fn<[Node, VignettePatternOptions?]>(([_uv, options = {}]) => {
   const { smoothing = 0.45, exponent = 1.2 } = options as VignettePatternOptions
   const vignette = smoothstep(smoothing, 1, sdSphere(_uv)).oneMinus()
   return pow(vignette, exponent)

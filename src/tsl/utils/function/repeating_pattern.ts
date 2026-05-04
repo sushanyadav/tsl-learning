@@ -1,4 +1,5 @@
 import { float, Fn, sin } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
 /**
  * Returns a repeating pattern of a sine function.
@@ -7,7 +8,7 @@ import { float, Fn, sin } from 'three/tsl'
  * @param {float} [_time=0] - The time offset.
  * @returns {float} The repeated sine pattern value.
  */
-export const repeatingPattern = Fn(([pattern, repeat, _time = float(0)]) => {
+export const repeatingPattern = Fn<[Node, Node, Node?]>(([pattern, repeat, _time = float(0)]) => {
   pattern.assign(sin(pattern.mul(repeat).add(_time)).div(repeat))
   return pattern
 })

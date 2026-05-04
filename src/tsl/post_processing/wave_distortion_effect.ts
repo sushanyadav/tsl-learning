@@ -1,5 +1,15 @@
 import { Fn, float, uv } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 import { waveDistortion } from '@/tsl/distortion/wave_distortion'
+
+type WaveDistortionEffectProps = {
+  input: any
+  inputUV?: () => Node
+  frequency?: any
+  amplitude?: any
+  angle?: any
+  timeOffset?: any
+}
 
 /**
  * Creates a wave distortion effect for post-processing.
@@ -12,7 +22,7 @@ import { waveDistortion } from '@/tsl/distortion/wave_distortion'
  * @param {number} [props.timeOffset] - Time offset for animation
  * @returns {vec4} The wave distorted color
  */
-export const waveDistortionEffect = Fn((props) => {
+export const waveDistortionEffect = Fn<WaveDistortionEffectProps>((props) => {
   const { input, inputUV = uv, frequency = 10.0, amplitude = 0.1, angle = 0.0, timeOffset = 0.0 } = props || {}
 
   const _uv = inputUV().toVar()

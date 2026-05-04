@@ -2,6 +2,7 @@
 // Added a 4th dimension
 
 import { EPSILON, cross, Fn, vec3, vec4 } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 import { simplexNoise4d } from './simplex_noise_4d'
 
 /**
@@ -9,7 +10,7 @@ import { simplexNoise4d } from './simplex_noise_4d'
  * @param {vec4} inputA - Input 4D vector.
  * @returns {vec3} Curl noise vector.
  */
-export const curlNoise4d = Fn(([inputA]) => {
+export const curlNoise4d = Fn<[Node]>(([inputA]) => {
   // X
   const aXPos = simplexNoise4d(inputA.add(vec4(EPSILON, 0, 0, 0)))
   const aXNeg = simplexNoise4d(inputA.sub(vec4(EPSILON, 0, 0, 0)))

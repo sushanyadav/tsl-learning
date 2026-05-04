@@ -1,4 +1,5 @@
 import { vec4, float, vec2, length, If, Fn, mix, clamp, smoothstep, mul, sqrt, abs, atan, cos, sin } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
 /**
  * Computes a bilinear gradient between four colors using barycentric coordinates
@@ -9,7 +10,7 @@ import { vec4, float, vec2, length, If, Fn, mix, clamp, smoothstep, mul, sqrt, a
  * @param color4 - Fourth color (bottom-right)
  * @returns Interpolated color based on the four corner colors
  */
-export const grad = Fn(([_st, color1, color2, color3, color4]) => {
+export const grad = Fn<[Node, Node, Node, Node, Node]>(([_st, color1, color2, color3, color4]) => {
   // Compute a bilinear gradient between four colors
   const _uv = vec2(_st).toVar()
   const _color0 = vec4(color1, 1.0).toVar()
@@ -73,7 +74,7 @@ export const grad = Fn(([_st, color1, color2, color3, color4]) => {
  * @param _p - 2D Cartesian coordinates (x, y)
  * @returns Polar coordinates (radius, angle) where angle is in radians
  */
-export const cartesianToPolar = Fn(([_p]) => {
+export const cartesianToPolar = Fn<[Node]>(([_p]) => {
   const r = length(_p)
   const theta = atan(_p.y, _p.x)
   return vec2(r, theta)
@@ -84,7 +85,7 @@ export const cartesianToPolar = Fn(([_p]) => {
  * @param _p - Polar coordinates (radius, angle) where angle is in radians
  * @returns Cartesian coordinates (x, y)
  */
-export const polarToCartesian = Fn(([_p]) => {
+export const polarToCartesian = Fn<[Node]>(([_p]) => {
   const polar = vec2(_p).toVar()
   const r = float(polar.x).toVar()
   const theta = float(polar.y).toVar()

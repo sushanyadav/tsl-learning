@@ -1,4 +1,5 @@
 import { vec4, mod, Fn, float, floor, mul, sub, vec3, dot, vec2, step, clamp, max } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 import { grad4, permute, taylorInvSqrt } from './common'
 
 /**
@@ -6,7 +7,7 @@ import { grad4, permute, taylorInvSqrt } from './common'
  * @param {vec4} v - Input 4D vector.
  * @returns {float} Noise value.
  */
-export const simplexNoise4d = /*#__PURE__*/ Fn(([v_immutable]) => {
+export const simplexNoise4d = /*#__PURE__*/ Fn<[Node]>(([v_immutable]) => {
   const v = vec4(v_immutable).toVar()
   const C = vec2(0.138196601125010504, 0.309016994374947451)
   const i = vec4(floor(v.add(dot(v, C.yyyy)))).toVar()

@@ -1,11 +1,12 @@
 import { Fn, vec3, pow, float, mix, smoothstep, exp, div, clamp, add, mul } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
 /**
  * Applies Reinhard tonemapping to a color vector.
  * @param {vec3} _color Input color vector
  * @returns {vec3} Tonemapped color
  */
-export const reinhardTonemap = Fn(([_color]) => {
+export const reinhardTonemap = Fn<[Node]>(([_color]) => {
   return _color.div(_color.add(1.0))
 })
 
@@ -14,7 +15,7 @@ export const reinhardTonemap = Fn(([_color]) => {
  * @param {vec3} _color Input color vector
  * @returns {vec3} Tonemapped color
  */
-export const uncharted2Tonemap = Fn(([_color]) => {
+export const uncharted2Tonemap = Fn<[Node]>(([_color]) => {
   const col = _color
   col.mulAssign(16.0)
 
@@ -37,7 +38,7 @@ export const uncharted2Tonemap = Fn(([_color]) => {
  * @param {vec3} _color Input color vector
  * @returns {vec3} Tonemapped color
  */
-export const acesTonemap = Fn(([_color]) => {
+export const acesTonemap = Fn<[Node]>(([_color]) => {
   const a = float(2.51)
   const b = float(0.03)
   const c = float(2.43)
@@ -53,7 +54,7 @@ export const acesTonemap = Fn(([_color]) => {
  * @param {vec3} _color Input color vector
  * @returns {vec3} Tonemapped color
  */
-export const crossProcessTonemap = Fn(([_color]) => {
+export const crossProcessTonemap = Fn<[Node]>(([_color]) => {
   // Exaggerate blue, shift red/green
   const r = pow(_color.x, 0.8)
   const g = pow(_color.y, 1.2)
@@ -67,7 +68,7 @@ export const crossProcessTonemap = Fn(([_color]) => {
  * @param {vec3} _color Input color vector
  * @returns {vec3} Tonemapped color
  */
-export const bleachBypassTonemap = Fn(([_color]) => {
+export const bleachBypassTonemap = Fn<[Node]>(([_color]) => {
   const lum = _color.dot(vec3(0.2126, 0.7152, 0.0722))
   const mixAmt = 0.7
   return mix(vec3(lum), _color, mixAmt).mul(1.2).clamp(0.0, 1.0)
@@ -79,7 +80,7 @@ export const bleachBypassTonemap = Fn(([_color]) => {
  * @param {vec3} _color Input color vector
  * @returns {vec3} Tonemapped color
  */
-export const technicolorTonemap = Fn(([_color]) => {
+export const technicolorTonemap = Fn<[Node]>(([_color]) => {
   // Split and recombine channels for a retro look
   const r = _color.x.mul(1.5)
   const g = _color.y.mul(1.2)
@@ -93,7 +94,7 @@ export const technicolorTonemap = Fn(([_color]) => {
  * @param {vec3} _color Input color vector
  * @returns {vec3} Tonemapped color
  */
-export const cinematicTonemap = Fn(([_color]) => {
+export const cinematicTonemap = Fn<[Node]>(([_color]) => {
   // S-curve for contrast, slight color shift
   const r = smoothstep(0.05, 0.95, _color.x.mul(0.95).add(0.02))
   const g = smoothstep(0.05, 0.95, _color.y.mul(1.05))
@@ -105,11 +106,11 @@ export const cinematicTonemap = Fn(([_color]) => {
  * Adapted to be close to Tonemap_ACES, with similar range
  * Gamma 2.2 correction is baked in, don't use with sRGB conversion!
  */
-export const unrealTonemap = Fn(([_color]) => {
+export const unrealTonemap = Fn<[Node]>(([_color]) => {
   return _color.div(_color.add(0.155)).mul(1.019)
 })
 
-export const tanhTonemap = Fn(([_color]) => {
+export const tanhTonemap = Fn<[Node]>(([_color]) => {
   const x = _color
   x.assign(clamp(x, -40.0, 40.0))
   const e = exp(mul(-2.0, x))
@@ -122,7 +123,7 @@ export const tanhTonemap = Fn(([_color]) => {
  * @param {float} val Input value
  * @returns {float} Approximated tanh(val) value between -1 and 1
  */
-export const tanh = Fn(([val]) => {
+export const tanh = Fn<[Node]>(([val]) => {
   const tmp = exp(val).toVar()
   const tanH = tmp.sub(div(1.0, tmp)).div(tmp.add(div(1.0, tmp)))
   return tanH
@@ -133,7 +134,7 @@ export const tanh = Fn(([val]) => {
  * @param {float} val Input value
  * @returns {float} Approximated sinh(val) value
  */
-export const sinh = Fn(([val]) => {
+export const sinh = Fn<[Node]>(([val]) => {
   const tmp = exp(val).toVar()
   const sinH = tmp.sub(div(1.0, tmp)).div(2.0)
   return sinH
@@ -144,7 +145,7 @@ export const sinh = Fn(([val]) => {
  * @param {float} val Input value
  * @returns {float} Approximated cosh(val) value
  */
-export const cosh = Fn(([val]) => {
+export const cosh = Fn<[Node]>(([val]) => {
   const tmp = exp(val).toVar()
   const cosH = tmp.add(div(1.0, tmp)).div(2.0)
   return cosH

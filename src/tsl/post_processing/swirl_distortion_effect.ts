@@ -1,5 +1,14 @@
 import { Fn, vec2, float, uv } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 import { swirlDistortion } from '@/tsl/distortion/swirl_distortion'
+
+type SwirlDistortionEffectProps = {
+  input: any
+  inputUV?: () => Node
+  strength?: any
+  radius?: any
+  center?: any
+}
 
 /**
  * Creates a swirl/twirl distortion effect for post-processing.
@@ -11,7 +20,7 @@ import { swirlDistortion } from '@/tsl/distortion/swirl_distortion'
  * @param {vec2} [props.center=vec2(0.5, 0.5)] - Center point of the swirl effect
  * @returns {vec4} The swirled/distorted color
  */
-export const swirlDistortionEffect = Fn((props) => {
+export const swirlDistortionEffect = Fn<SwirlDistortionEffectProps>((props) => {
   const { input, inputUV = uv, strength = 1.0, radius = 0.5, center = vec2(0.5) } = props || {}
 
   const _uv = inputUV().toVar()

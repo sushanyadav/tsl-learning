@@ -1,5 +1,15 @@
 import { Fn, vec2, float, uv } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 import { bulgeDistortion } from '@/tsl/distortion/bulge_distortion'
+
+type BulgeEffectProps = {
+  input: any
+  inputUV?: () => Node
+  strength?: any
+  radius?: any
+  power?: any
+  center?: any
+}
 
 /**
  * Creates a bulge distortion effect for post-processing.
@@ -12,7 +22,7 @@ import { bulgeDistortion } from '@/tsl/distortion/bulge_distortion'
  * @param {vec2} [props.center=vec2(0.5, 0.5)] - Center point of the distortion
  * @returns {vec4} The bulge distorted color
  */
-export const bulgeEffect = Fn((props) => {
+export const bulgeEffect = Fn<BulgeEffectProps>((props) => {
   const { input, inputUV = uv, strength = 0.5, radius = 0.3, power = 1.0, center = vec2(0.5) } = props || {}
 
   const _uv = inputUV().toVar()

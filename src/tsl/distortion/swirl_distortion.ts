@@ -1,4 +1,5 @@
 import { Fn, vec2, float, length, atan2, sin, cos, oneMinus } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
 type SwirlDistortionOptions = {
   strength?: ReturnType<typeof float>
@@ -15,7 +16,7 @@ type SwirlDistortionOptions = {
  * @param {vec2} [options.center=vec2(0.0, 0.0)] - Center point of the swirl effect
  * @returns {vec2} Distorted UV coordinates
  */
-export const swirlDistortion = Fn(([_uv, options = {}]) => {
+export const swirlDistortion = Fn<[Node, SwirlDistortionOptions?]>(([_uv, options = {}]) => {
   const { strength = float(1), radius = float(0.5), center = vec2(0) } = options as SwirlDistortionOptions
   const uv = _uv.toVar()
   const offset = uv.sub(center).toVar()

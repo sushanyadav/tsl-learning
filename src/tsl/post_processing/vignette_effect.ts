@@ -1,5 +1,13 @@
 import { Fn, smoothstep, pow, uv } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 import { sdSphere } from '@/tsl/utils/sdf/shapes'
+
+type VignetteEffectProps = {
+  input: any
+  inputUV?: () => Node
+  smoothing?: any
+  exponent?: any
+}
 
 /**
  * Creates a vignette effect for post-processing.
@@ -9,7 +17,7 @@ import { sdSphere } from '@/tsl/utils/sdf/shapes'
  * @param {number} [props.exponent=5] - The exponent of the vignette.
  * @returns {vec4} The vignette processed color
  */
-export const vignetteEffect = Fn((props) => {
+export const vignetteEffect = Fn<VignetteEffectProps>((props) => {
   const { input, inputUV = uv, smoothing = 0.25, exponent = 5 } = props || {}
 
   const _uv = inputUV().toVar()

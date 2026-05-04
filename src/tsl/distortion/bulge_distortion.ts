@@ -1,4 +1,5 @@
 import { Fn, vec2, float, length, normalize, min, oneMinus, pow, smoothstep } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
 type BulgeDistortionOptions = {
   strength?: ReturnType<typeof float>
@@ -17,7 +18,7 @@ type BulgeDistortionOptions = {
  * @param {vec2} [options.center=vec2(0.0)] - Center point of the distortion
  * @returns {vec2} Distorted UV coordinates
  */
-export const bulgeDistortion = Fn(([_uv, options = {}]) => {
+export const bulgeDistortion = Fn<[Node, BulgeDistortionOptions?]>(([_uv, options = {}]) => {
   const {
     strength = float(0.5),
     radius = float(0.5),

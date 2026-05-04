@@ -1,4 +1,5 @@
 import { Fn, pow } from 'three/tsl'
+import type { Node } from 'three/webgpu'
 
 /**
  * Returns a bloomed edge based on a given edge and pattern.
@@ -7,7 +8,7 @@ import { Fn, pow } from 'three/tsl'
  * @param {float} exponent - The bloom exponent.
  * @returns {float} The bloomed edge value.
  */
-export const bloom = Fn(([pattern, edge, exponent]) => {
+export const bloom = Fn<[Node, Node, Node]>(([pattern, edge, exponent]) => {
   pattern.assign(pow(edge.div(pattern), exponent))
   return pattern
 })
